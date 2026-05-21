@@ -23,10 +23,15 @@
         
         <div class="flex justify-between items-center px-2">
             <h2 class="text-[10px] font-bold text-blue-300 uppercase" id="city-name">Localisation...</h2>
-            <div class="flex gap-3">
+            <div class="flex gap-4 items-center">
                 <a href="https://www.facebook.com/share/g/1Fe5eQhNqP/" target="_blank" class="text-blue-400 text-3xl"><i class="fab fa-facebook"></i></a>
-                <button onclick="openSpotsModal()" class="bg-blue-900/50 border border-blue-400 text-blue-300 px-3 py-1 rounded-lg text-[10px] font-bold uppercase">Spots</button>
+                <button onclick="toggleSpots()" class="bg-blue-900/50 border border-blue-400 text-blue-300 px-3 py-1 rounded-lg text-[10px] font-bold uppercase">Spots</button>
             </div>
+        </div>
+
+        <div id="spots-section" class="hidden glass-card p-4 space-y-2">
+            <h3 class="text-[10px] font-bold text-blue-300 uppercase mb-2">Liste des Spots Partagés</h3>
+            <div id="spots-list" class="space-y-2"></div>
         </div>
 
         <div class="glass-card p-6 text-center border-2 border-blue-400/30">
@@ -41,9 +46,9 @@
             </div>
             
             <div class="grid grid-cols-2 gap-2">
-                <input type="number" id="temp-slider" min="5" max="25" value="15" class="p-2 bg-slate-900 rounded-lg text-center" oninput="calculateIndex()">
-                <select id="moon-phase" onchange="calculateIndex()" class="p-2 bg-slate-900 rounded-lg">
-                    <option value="0.8">🌑 Lune</option><option value="1.0">🌗 Croissant</option><option value="1.4">🌕 Pleine</option>
+                <input type="number" id="temp-slider" min="5" max="25" value="15" class="p-2 bg-slate-900 rounded-lg text-center text-xs" oninput="calculateIndex()" placeholder="Temp °C">
+                <select id="moon-phase" onchange="calculateIndex()" class="p-2 bg-slate-900 rounded-lg text-xs">
+                    <option value="0.8">🌑 Nouvelle</option><option value="1.0">🌗 Quartier</option><option value="1.4">🌕 Pleine</option>
                 </select>
             </div>
 
@@ -51,11 +56,6 @@
                 <option value="Silure">Silure</option><option value="Truite">Truite</option><option value="Brochet">Brochet</option>
                 <option value="Perche">Perche</option><option value="Anguille">Anguille</option><option value="Carpe">Carpe</option>
             </select>
-        </div>
-
-        <div id="spots-modal" class="hidden glass-card p-4">
-            <textarea id="spots-input" class="w-full p-2 bg-slate-900 text-white text-xs rounded-lg" rows="3" placeholder="Colle tes liens ici..."></textarea>
-            <button onclick="saveSpots()" class="w-full mt-2 bg-blue-600 py-2 rounded-lg text-xs">Enregistrer mes spots</button>
         </div>
 
         <div class="glass-card overflow-hidden">
@@ -69,14 +69,25 @@
     </div>
 
     <script>
+        const mySpots = [
+            { name: "Spot Principal", url: "https://maps.app.goo.gl/WcPo8FsBS1EmzdVN9?g_st=iw" },
+            { name: "Nouveau Spot", url: "Https://maps.app.goo.gl/WcPo8FsBS1EmzdVN9?g_st=iwAjoute-moi" }
+        ];
+
         const fishData = {
             "Silure": { "Rivière": "80%", "Lac": "60%" }, "Truite": { "Rivière": "90%", "Lac": "30%" },
             "Brochet": { "Rivière": "60%", "Lac": "85%" }, "Perche": { "Rivière": "70%", "Lac": "75%" },
             "Anguille": { "Rivière": "40%", "Lac": "20%" }, "Carpe": { "Rivière": "30%", "Lac": "70%" }
         };
 
-        function openSpotsModal() { document.getElementById('spots-modal').classList.toggle('hidden'); }
-        function saveSpots() { alert("Spots enregistrés : " + document.getElementById('spots-input').value); }
+        function toggleSpots() { 
+            const section = document.getElementById('spots-section');
+            section.classList.toggle('hidden');
+            if(!section.classList.contains('hidden')) {
+                const list = document.getElementById('spots-list');
+                list.innerHTML = mySpots.map(s => `<a href="${s.url}" target="_blank" class="block bg-blue-900/20 p-2 rounded text-[10px] text-blue-300 hover:text-white border border-blue-500/20">${s.name}</a>`).join('');
+            }
+        }
 
         function calculateIndex() {
             const meteo = parseInt(document.getElementById('meteo-slider').value);
