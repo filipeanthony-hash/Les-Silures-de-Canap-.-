@@ -21,15 +21,25 @@
 
     <div id="dashboard" class="hidden w-full max-w-md mx-auto space-y-6">
         
+        <div class="glass-card p-4">
+            <label class="block text-blue-300 text-xs font-bold uppercase mb-2">Choisir l'espèce :</label>
+            <select id="fish-select" onchange="updateProbabilities()" class="w-full p-3 rounded-xl bg-slate-900 border border-blue-500/50 text-white focus:outline-none">
+                <option value="Silure">Silure</option>
+                <option value="Truite">Truite</option>
+                <option value="Gardon">Gardon</option>
+                <option value="Brochet">Brochet</option>
+                <option value="Perche">Perche</option>
+                <option value="Anguille">Anguille</option>
+            </select>
+        </div>
+
         <div class="glass-card p-6 text-center">
-            <h2 class="text-xl font-bold text-blue-200 mb-4">Indice d'Activité Globale</h2>
-            <div id="gps-status" class="text-lg font-black text-blue-400 mb-2">0%</div>
-            <p id="gps-coords" class="text-xs text-slate-400">En attente de position GPS...</p>
-            <button onclick="getGPS()" class="mt-4 text-[10px] bg-blue-900/50 px-3 py-1 rounded-full border border-blue-500">Actualiser GPS</button>
+            <h2 class="text-xl font-bold text-blue-200 mb-4">Indice Global : <span id="fish-name">Silure</span></h2>
+            <div id="gps-status" class="text-3xl font-black text-blue-400 mb-2">0%</div>
+            <p id="gps-coords" class="text-[10px] text-slate-400">En attente de position GPS...</p>
         </div>
 
         <div class="glass-card overflow-hidden">
-            <h3 class="p-4 text-center text-blue-200 font-bold border-b border-blue-500/20">Probabilités par Lieu</h3>
             <table class="w-full text-xs text-center">
                 <thead>
                     <tr class="text-slate-400 border-b border-blue-500/10">
@@ -37,11 +47,8 @@
                         <th class="p-3">PROBABILITÉ</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-blue-500/10">
-                    <tr><td class="p-3 text-left font-bold">Rivière</td><td class="p-3 text-blue-400 font-black">75%</td></tr>
-                    <tr><td class="p-3 text-left font-bold">Lac</td><td class="p-3 text-green-400 font-black">45%</td></tr>
-                    <tr><td class="p-3 text-left font-bold">Étang</td><td class="p-3 text-orange-400 font-black">30%</td></tr>
-                </tbody>
+                <tbody class="divide-y divide-blue-500/10" id="prob-table">
+                    </tbody>
             </table>
         </div>
 
@@ -60,11 +67,31 @@
     </div>
 
     <script>
+        const fishData = {
+            "Silure": { "Rivière": "80%", "Lac": "60%", "Étang": "20%" },
+            "Truite": { "Rivière": "90%", "Lac": "30%", "Étang": "10%" },
+            "Gardon": { "Rivière": "50%", "Lac": "70%", "Étang": "80%" },
+            "Brochet": { "Rivière": "60%", "Lac": "85%", "Étang": "40%" },
+            "Perche": { "Rivière": "70%", "Lac": "75%", "Étang": "50%" },
+            "Anguille": { "Rivière": "40%", "Lac": "20%", "Étang": "90%" }
+        };
+
+        function updateProbabilities() {
+            const fish = document.getElementById('fish-select').value;
+            document.getElementById('fish-name').innerText = fish;
+            const table = document.getElementById('prob-table');
+            table.innerHTML = "";
+            
+            for (let lieu in fishData[fish]) {
+                table.innerHTML += `<tr><td class="p-3 text-left font-bold">${lieu}</td><td class="p-3 text-blue-400 font-black">${fishData[fish][lieu]}</td></tr>`;
+            }
+        }
+
         function getGPS() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition((pos) => {
                     document.getElementById('gps-coords').innerText = "Lat: " + pos.coords.latitude.toFixed(4) + " | Lon: " + pos.coords.longitude.toFixed(4);
-                    document.getElementById('gps-status').innerText = "68% (Activité Haute)";
+                    document.getElementById('gps-status').innerText = "72% (Activité Élevée)";
                 });
             }
         }
@@ -79,7 +106,8 @@
         function showDashboard() {
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('dashboard').classList.remove('hidden');
-            getGPS(); // Tente de récupérer la position dès l'ouverture
+            updateProbabilities();
+            getGPS();
         }
 
         function logout() { localStorage.removeItem("isLoggedIn"); location.reload(); }
