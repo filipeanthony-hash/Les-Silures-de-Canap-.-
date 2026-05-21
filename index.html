@@ -68,16 +68,22 @@
             "Gardon": { "Rivière": "50%", "Lac": "90%" }
         };
 
+        async function getCityName(lat, lon) {
+            try {
+                const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+                const data = await res.json();
+                document.getElementById('city-name').innerText = data.address.city || data.address.town || data.address.village || "Localisation";
+            } catch(e) { document.getElementById('city-name').innerText = "Paris"; }
+        }
+
         function calculateIndex() {
             const fish = document.getElementById('fish-select').value;
-            const meteoValue = document.getElementById('meteo-slider').value; // 0 = Pluie, 100 = Soleil
+            const meteoValue = document.getElementById('meteo-slider').value;
             const table = document.getElementById('prob-table');
             table.innerHTML = "";
             for (let lieu in fishData[fish]) {
                 table.innerHTML += `<tr><td class="p-3">${lieu}</td><td class="p-3 font-bold text-blue-400">${fishData[fish][lieu]}</td></tr>`;
             }
-            
-            // Calcul : Plus on est vers la pluie (0), plus le score est élevé pour la plupart des poissons
             let score = (meteoValue < 50) ? (70 + (50 - meteoValue) / 2) : (70 - (meteoValue - 50) / 2);
             document.getElementById('final-index').innerText = Math.min(100, Math.floor(score)) + "%";
             document.getElementById('weather-status').innerText = meteoValue < 50 ? "🌧️ Tendance Pluvieuse" : "☀️ Tendance Ensoleillée";
@@ -87,6 +93,10 @@
             if (document.getElementById('pass').value === "198502") {
                 document.getElementById('login-screen').classList.add('hidden');
                 document.getElementById('dashboard').classList.remove('hidden');
+                // Réactivation de la géolocalisation
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(p => getCityName(p.coords.latitude, p.coords.longitude));
+                }
                 calculateIndex();
             } else { alert("Mot de passe incorrect"); }
         }
