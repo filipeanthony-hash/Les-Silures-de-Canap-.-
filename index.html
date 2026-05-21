@@ -21,9 +21,11 @@
 
     <div id="dashboard" class="hidden w-full max-w-md mx-auto space-y-4">
         
-        <div class="flex justify-between items-center">
+        <div class="flex justify-between items-center px-2">
             <h2 class="text-xs font-bold text-blue-300 uppercase" id="city-name">Paris</h2>
-            <a href="https://www.facebook.com/share/g/1Fe5eQhNqP/" target="_blank" class="text-blue-400 text-2xl"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.facebook.com/share/g/1Fe5eQhNqP/" target="_blank" class="text-blue-400 text-4xl p-2 hover:text-blue-300 transition-all">
+                <i class="fab fa-facebook"></i>
+            </a>
         </div>
 
         <div class="glass-card p-6 text-center border-2 border-blue-400/30">
@@ -52,7 +54,7 @@
     </div>
 
     <script>
-        let currentMeteo = 'sun'; // Par défaut
+        let currentMeteo = 'sun';
         const fishData = {
             "Silure": { "Rivière": "80%", "Lac": "60%" }, "Truite": { "Rivière": "90%", "Lac": "30%" },
             "Brochet": { "Rivière": "60%", "Lac": "85%" }, "Perche": { "Rivière": "70%", "Lac": "75%" },
@@ -61,8 +63,6 @@
         };
 
         async function fetchMeteo(lat, lon) {
-            // Ici, le code détecte la météo réelle via une API
-            // Simulation : pour Paris, on pourrait avoir de la pluie ou du soleil
             currentMeteo = Math.random() > 0.5 ? 'rain' : 'sun';
             document.getElementById('weather-status').innerText = currentMeteo === 'rain' ? "🌧️ Météo actuelle : Pluie" : "☀️ Météo actuelle : Beau temps";
             calculateIndex();
