@@ -10,12 +10,13 @@
         .river-bg { background: linear-gradient(180deg, #e0f2f1 0%, #b2dfdb 100%); }
         .glass-card-river { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(178, 223, 219, 0.5); border-radius: 1.5rem; }
         
-        /* Force la couleur Bleu Facebook (#1877F2) sur TOUT le texte et les chiffres */
-        body, body * { color: #1877F2 !important; }
+        /* Force la couleur NOIRE sur TOUT le texte et les chiffres */
+        body, body * { color: #000000 !important; }
         
-        /* Ajustement pour les boutons et bordures pour harmoniser avec le bleu */
+        /* Garde les éléments de design en Bleu Facebook */
         .btn-fb { background-color: #1877F2 !important; color: white !important; }
         .border-fb { border-color: #1877F2 !important; }
+        .text-fb { color: #1877F2 !important; }
     </style>
 </head>
 <body class="river-bg min-h-screen font-sans p-4">
@@ -31,7 +32,7 @@
         <div class="flex justify-between items-center px-2">
             <h2 class="text-[10px] font-bold uppercase" id="city-name">Localisation...</h2>
             <div class="flex gap-4 items-center">
-                <a href="https://www.facebook.com/share/g/1Fe5eQhNqP/" target="_blank" class="text-3xl"><i class="fab fa-facebook"></i></a>
+                <a href="https://www.facebook.com/share/g/1Fe5eQhNqP/" target="_blank" class="text-fb text-3xl"><i class="fab fa-facebook"></i></a>
                 <button onclick="toggleSpots()" class="btn-fb px-5 py-2 rounded-lg text-[11px] font-black uppercase shadow-lg hover:opacity-90 transition-all">Spots</button>
             </div>
         </div>
@@ -41,7 +42,7 @@
             <div id="spots-list" class="space-y-2"></div>
         </div>
 
-        <div class="glass-card-river p-6 text-center border-2 border-white border-fb">
+        <div class="glass-card-river p-6 text-center border-2 border-fb">
             <div id="final-index" class="text-5xl font-black">0%</div>
             <p id="weather-status" class="text-[10px] mt-2 italic">Calcul en cours...</p>
         </div>
