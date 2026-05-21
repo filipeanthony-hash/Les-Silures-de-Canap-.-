@@ -8,7 +8,6 @@
     <link rel="apple-touch-icon" href="https://i.postimg.cc/yY1bXpD4/1779352785742.png">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="Silures">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -21,15 +20,9 @@
         .text-fb { color: #1877F2 !important; }
     </style>
 </head>
-<body class="river-bg min-h-screen font-sans p-4">
+<body class="river-bg min-h-screen font-sans p-4" onload="initApp()">
 
-    <div id="login-screen" class="w-full max-w-sm mx-auto p-8 glass-card-river text-center shadow-xl mt-10 border-fb">
-        <h2 class="text-2xl font-black mb-6 uppercase tracking-widest">Accès Membres</h2>
-        <input type="password" id="pass" placeholder="Mot de passe" class="w-full p-4 rounded-xl bg-white/50 border border-fb mb-6 text-center focus:outline-none">
-        <button onclick="checkPass()" class="w-full py-4 btn-fb rounded-xl font-black hover:opacity-90 transition-all">SE CONNECTER</button>
-    </div>
-
-    <div id="dashboard" class="hidden w-full max-w-md mx-auto space-y-4">
+    <div id="dashboard" class="w-full max-w-md mx-auto space-y-4">
         
         <div class="flex justify-between items-center px-2">
             <h2 class="text-[10px] font-bold uppercase" id="city-name">Localisation...</h2>
@@ -80,8 +73,6 @@
                 <tbody id="prob-table"></tbody>
             </table>
         </div>
-
-        <p class="text-center text-xs underline"><button onclick="logout()">Déconnexion</button></p>
         
         <div class="mt-4 pb-6">
             <img src="https://i.postimg.cc/yY1bXpD4/1779352785742.png" alt="Les Silures de Canapé" class="w-full rounded-2xl border-4 border-white shadow-xl">
@@ -89,11 +80,9 @@
     </div>
 
     <script>
-        const notificationText = "Bienvenue sur le groupe Les Silures de Canapé !";
-        document.getElementById('notif-bar').innerText = notificationText;
+        document.getElementById('notif-bar').innerText = "Bienvenue sur le groupe Les Silures de Canapé !";
 
         const mySpots = [{ name: "36 Rue René Leblond, 77220 Tournan-en-Brie", url: "https://maps.app.goo.gl/yryjv1H6Ko4PFoSZA?g_st=ac" }, { name: "Nouveau Spot", url: "#" }];
-        
         const fishData = {
             "Silure": { "Rivière": "80%", "Lac": "60%" }, "Truite": { "Rivière": "90%", "Lac": "30%" },
             "Brochet": { "Rivière": "60%", "Lac": "85%" }, "Perche": { "Rivière": "70%", "Lac": "75%" }
@@ -141,15 +130,6 @@
             }
             calculateIndex();
         }
-
-        function checkPass() {
-            if (document.getElementById('pass').value === "198502") {
-                document.getElementById('login-screen').classList.add('hidden');
-                document.getElementById('dashboard').classList.remove('hidden');
-                initApp();
-            } else { alert("Mot de passe incorrect"); }
-        }
-        function logout() { location.reload(); }
     </script>
 </body>
 </html>
