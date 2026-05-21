@@ -30,19 +30,30 @@
 
         <div class="glass-card p-6 text-center border-2 border-blue-400/30">
             <div id="final-index" class="text-5xl font-black text-blue-400">0%</div>
-            <p id="weather-status" class="text-[10px] text-slate-400 mt-2 italic">Analyse météo en cours...</p>
+            <p id="weather-status" class="text-[10px] text-slate-400 mt-2 italic">Calcul en temps réel...</p>
         </div>
 
         <div class="glass-card p-4 space-y-4">
             <div>
-                <div class="flex justify-between text-xs font-bold text-blue-300 mb-2">
+                <div class="flex justify-between text-[10px] font-bold text-blue-300 mb-2">
                     <span>🌧️ Pluie</span>
                     <span>☀️ Beau Temps</span>
                 </div>
-                <input type="range" id="meteo-slider" min="0" max="100" value="50" class="w-full h-2 bg-blue-900 rounded-lg appearance-none cursor-pointer" oninput="calculateIndex()">
+                <input type="range" id="meteo-slider" min="0" max="100" value="50" class="w-full h-2 bg-blue-900 rounded-lg cursor-pointer" oninput="calculateIndex()">
             </div>
             
-            <select id="fish-select" onchange="calculateIndex()" class="w-full p-3 rounded-xl bg-slate-900 border border-blue-500/50 text-white">
+            <div>
+                <label class="text-[10px] font-bold text-blue-300">Temp. Eau : <span id="temp-val">15</span>°C</label>
+                <input type="range" id="temp-slider" min="5" max="25" value="15" class="w-full h-2 bg-blue-900 rounded-lg" oninput="calculateIndex()">
+            </div>
+
+            <select id="moon-phase" onchange="calculateIndex()" class="w-full p-2 bg-slate-900 border border-blue-500/30 rounded-lg text-xs">
+                <option value="0.8">🌑 Nouvelle Lune</option>
+                <option value="1.0">🌗 Premier Quartier</option>
+                <option value="1.4">🌕 Pleine Lune (Bonus)</option>
+            </select>
+
+            <select id="fish-select" onchange="calculateIndex()" class="w-full p-3 rounded-xl bg-slate-900 border border-blue-500/50 text-white text-xs">
                 <option value="Silure">Silure</option><option value="Truite">Truite</option>
                 <option value="Brochet">Brochet</option><option value="Perche">Perche</option>
                 <option value="Anguille">Anguille</option><option value="Carpe">Carpe</option>
@@ -68,36 +79,46 @@
             "Gardon": { "Rivière": "50%", "Lac": "90%" }
         };
 
-        async function getCityName(lat, lon) {
-            try {
-                const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
-                const data = await res.json();
-                document.getElementById('city-name').innerText = data.address.city || data.address.town || data.address.village || "Localisation";
-            } catch(e) { document.getElementById('city-name').innerText = "Paris"; }
-        }
-
         function calculateIndex() {
+            const meteo = parseInt(document.getElementById('meteo-slider').value);
+            const temp = parseInt(document.getElementById('temp-slider').value);
+            const moon = parseFloat(document.getElementById('moon-phase').value);
             const fish = document.getElementById('fish-select').value;
-            const meteoValue = document.getElementById('meteo-slider').value;
+            
+            document.getElementById('temp-val').innerText = temp;
+            
+            // Logique de calcul complexe
+            let score = (meteo < 50) ? 60 : 40; // Bonus pluie
+            if (temp >= 12 && temp <= 18) score += 20; // Bonus température
+            score = Math.floor(score * moon); // Multiplicateur lune
+            
+            document.getElementById('final-index').innerText = Math.min(100, score) + "%";
+            document.getElementById('weather-status').innerText = meteo < 50 ? "🌧️ Tendance Pluvieuse" : "☀️ Tendance Ensoleillée";
+
+            // Mise à jour tableau
             const table = document.getElementById('prob-table');
             table.innerHTML = "";
             for (let lieu in fishData[fish]) {
                 table.innerHTML += `<tr><td class="p-3">${lieu}</td><td class="p-3 font-bold text-blue-400">${fishData[fish][lieu]}</td></tr>`;
             }
-            let score = (meteoValue < 50) ? (70 + (50 - meteoValue) / 2) : (70 - (meteoValue - 50) / 2);
-            document.getElementById('final-index').innerText = Math.min(100, Math.floor(score)) + "%";
-            document.getElementById('weather-status').innerText = meteoValue < 50 ? "🌧️ Tendance Pluvieuse" : "☀️ Tendance Ensoleillée";
+        }
+
+        async function initApp() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(async (p) => {
+                    const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${p.coords.latitude}&lon=${p.coords.longitude}`);
+                    const d = await res.json();
+                    document.getElementById('city-name').innerText = d.address.town || d.address.city || "Localisation";
+                });
+            }
+            calculateIndex();
         }
 
         function checkPass() {
             if (document.getElementById('pass').value === "198502") {
                 document.getElementById('login-screen').classList.add('hidden');
                 document.getElementById('dashboard').classList.remove('hidden');
-                // Réactivation de la géolocalisation
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(p => getCityName(p.coords.latitude, p.coords.longitude));
-                }
-                calculateIndex();
+                initApp();
             } else { alert("Mot de passe incorrect"); }
         }
         function logout() { location.reload(); }
