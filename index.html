@@ -28,12 +28,8 @@
         <div class="flex justify-between items-center px-2">
             <h2 class="text-[10px] font-bold uppercase" id="city-name">Localisation...</h2>
             <div class="flex gap-3 items-center">
-                <button onclick="window.open('https://chat.whatsapp.com/KfltuoycOB548IujbIB38q', '_blank')" class="text-green-600 text-3xl">
-                    <i class="fab fa-whatsapp"></i>
-                </button>
-                <button onclick="window.open('https://www.facebook.com/share/g/1Fe5eQhNqP/', '_blank')" class="text-fb text-3xl">
-                    <i class="fab fa-facebook"></i>
-                </button>
+                <button onclick="window.open('https://chat.whatsapp.com/KfltuoycOB548IujbIB38q', '_blank')" class="text-green-600 text-3xl"><i class="fab fa-whatsapp"></i></button>
+                <button onclick="window.open('https://www.facebook.com/share/g/1Fe5eQhNqP/', '_blank')" class="text-fb text-3xl"><i class="fab fa-facebook"></i></button>
                 <button onclick="toggleSpots()" class="btn-fb px-4 py-2 rounded-lg text-[10px] font-black uppercase shadow-lg hover:opacity-90 transition-all">Spots</button>
             </div>
         </div>
@@ -100,7 +96,6 @@
             const section = document.getElementById('spots-section');
             section.classList.toggle('hidden');
             if(!section.classList.contains('hidden')) {
-                // Ajout de la classe 'font-bold' ici pour mettre les noms des spots en gras
                 document.getElementById('spots-list').innerHTML = mySpots.map(s => 
                     `<div onclick="openSpot('${s.url}')" class="block w-full text-left bg-blue-50 p-2 rounded text-[10px] cursor-pointer hover:bg-blue-100 transition-colors font-bold">${s.name}</div>`
                 ).join('');
@@ -108,11 +103,7 @@
         }
 
         function openSpot(url) {
-            if(url !== "#") {
-                window.open(url, '_blank');
-            } else {
-                alert("Lien non disponible.");
-            }
+            if(url !== "#") { window.open(url, '_blank'); } else { alert("Lien non disponible."); }
         }
 
         function calculateIndex() {
@@ -123,9 +114,12 @@
             let score = Math.floor(((meteo < 50 ? 60 : 40) + (temp >= 12 && temp <= 18 ? 20 : 0)) * moon);
             document.getElementById('final-index').innerText = Math.min(100, score) + "%";
             document.getElementById('weather-status').innerText = meteo < 50 ? "🌧️ Tendance Pluvieuse" : "☀️ Tendance Ensoleillée";
+            
             const table = document.getElementById('prob-table');
             table.innerHTML = "";
-            for (let lieu in fishData[fish]) table.innerHTML += `<tr><td class="p-3">${lieu}</td><td class="p-3 font-bold">${fishData[fish][lieu]}</td></tr>`;
+            for (let lieu in fishData[fish]) {
+                table.innerHTML += `<tr><td class="p-3">${lieu}</td><td class="p-3 font-bold">${fishData[fish][lieu]}</td></tr>`;
+            }
         }
 
         async function initApp() {
