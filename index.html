@@ -93,7 +93,7 @@
         const notificationText = "Bienvenue sur le groupe Les Silures de Canapé !";
         document.getElementById('notif-bar').innerText = notificationText;
 
-        const mySpots = [{ name: "77220 Tournan-en-Brie", url: "#" }, { name: "Nouveau Spot", url: "#" }];
+        const mySpots = [{ name: "77220 Tournan-en-Brie", url: "https://www.google.com/maps" }, { name: "Nouveau Spot", url: "#" }];
         const fishData = {
             "Silure": { "Rivière": "80%", "Lac": "60%" }, "Truite": { "Rivière": "90%", "Lac": "30%" },
             "Brochet": { "Rivière": "60%", "Lac": "85%" }, "Perche": { "Rivière": "70%", "Lac": "75%" }
@@ -104,8 +104,16 @@
             section.classList.toggle('hidden');
             if(!section.classList.contains('hidden')) {
                 document.getElementById('spots-list').innerHTML = mySpots.map(s => 
-                    `<button onclick="window.open('${s.url}', '_blank')" class="block w-full text-left bg-blue-50 p-2 rounded text-[10px]">${s.name}</button>`
+                    `<div onclick="openSpot('${s.url}')" class="block w-full text-left bg-blue-50 p-2 rounded text-[10px] cursor-pointer hover:bg-blue-100 transition-colors">${s.name}</div>`
                 ).join('');
+            }
+        }
+
+        function openSpot(url) {
+            if(url !== "#") {
+                window.open(url, '_blank');
+            } else {
+                alert("Lien non disponible.");
             }
         }
 
