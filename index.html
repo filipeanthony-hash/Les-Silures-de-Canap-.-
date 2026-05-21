@@ -100,8 +100,9 @@
             const section = document.getElementById('spots-section');
             section.classList.toggle('hidden');
             if(!section.classList.contains('hidden')) {
+                // Ajout de la classe 'font-bold' ici pour mettre les noms des spots en gras
                 document.getElementById('spots-list').innerHTML = mySpots.map(s => 
-                    `<div onclick="openSpot('${s.url}')" class="block w-full text-left bg-blue-50 p-2 rounded text-[10px] cursor-pointer hover:bg-blue-100 transition-colors">${s.name}</div>`
+                    `<div onclick="openSpot('${s.url}')" class="block w-full text-left bg-blue-50 p-2 rounded text-[10px] cursor-pointer hover:bg-blue-100 transition-colors font-bold">${s.name}</div>`
                 ).join('');
             }
         }
