@@ -17,64 +17,59 @@
         .glass-card { background: rgba(25, 59, 87, 0.4); backdrop-filter: blur(15px); border: 1px solid rgba(74, 199, 242, 0.2); border-radius: 1.5rem; }
     </style>
 </head>
-<body class="underwater-bg min-h-screen text-white font-sans p-4">
+<body class="underwater-bg h-full text-white font-sans flex items-center justify-center p-4">
 
-    <div id="login-screen" class="max-w-sm mx-auto mt-20 p-8 glass-card text-center shadow-2xl">
+    <div id="login-screen" class="w-full max-w-sm p-8 glass-card text-center shadow-2xl">
         <h2 class="text-2xl font-black mb-6 text-blue-300 uppercase tracking-widest">Accès Membres</h2>
         <input type="password" id="pass" placeholder="Mot de passe" class="w-full p-4 rounded-xl bg-slate-900 border border-blue-500/50 mb-6 text-center focus:outline-none focus:ring-2 focus:ring-blue-400">
         <button onclick="checkPass()" class="w-full py-4 bg-blue-600 rounded-xl font-black hover:bg-blue-500 transition-all shadow-lg">SE CONNECTER</button>
     </div>
 
-    <div id="dashboard" class="hidden max-w-lg mx-auto space-y-6">
+    <div id="dashboard" class="hidden w-full max-w-md space-y-6">
+        <h2 class="text-center text-xl font-bold text-blue-200">Mes Raccourcis Sécurisés</h2>
         
-        <div class="glass-card p-6 text-center border-blue-500/30">
-            <div class="text-5xl font-black text-blue-400 mb-2">15%</div>
-            <div class="text-sm text-slate-400 uppercase tracking-widest font-bold">Activité Globale</div>
-        </div>
-
         <div class="grid grid-cols-2 gap-4">
-            <a href="https://www.facebook.com/share/g/1Fe5eQhNqP/" class="glass-card p-4 flex flex-col items-center hover:bg-blue-900/40 transition-all">
-                <i class="fab fa-facebook text-3xl text-blue-500 mb-2"></i>
-                <span class="text-xs font-bold uppercase">Facebook</span>
+            <a href="https://www.facebook.com/share/g/1Fe5eQhNqP/" class="glass-card p-6 flex flex-col items-center hover:bg-blue-900/40 transition-all">
+                <i class="fab fa-facebook text-4xl text-blue-500 mb-3"></i>
+                <span class="text-sm font-bold">Facebook Groupe</span>
             </a>
-            <a href="https://www.twitch.tv" class="glass-card p-4 flex flex-col items-center hover:bg-purple-900/40 transition-all">
-                <i class="fab fa-twitch text-3xl text-purple-500 mb-2"></i>
-                <span class="text-xs font-bold uppercase">Twitch</span>
+            
+            <a href="https://www.twitch.tv" class="glass-card p-6 flex flex-col items-center hover:bg-purple-900/40 transition-all">
+                <i class="fab fa-twitch text-4xl text-purple-500 mb-3"></i>
+                <span class="text-sm font-bold">Twitch Pêche</span>
             </a>
         </div>
-
-        <div class="glass-card overflow-hidden">
-            <h3 class="p-4 text-center text-blue-200 font-bold border-b border-blue-500/20">Indices de Pêche Spécifiques</h3>
-            <table class="w-full text-xs">
-                <thead class="bg-blue-900/20">
-                    <tr class="text-slate-400"><th class="p-3 text-left">ESPECE</th><th class="p-3">ACTIVITÉ</th><th class="p-3 text-right">TERRAIN</th></tr>
-                </thead>
-                <tbody class="divide-y divide-blue-500/10">
-                    <tr><td class="p-3 font-bold">Silure</td><td class="p-3 text-center text-red-400">5%</td><td class="p-3 text-right">Fleuve</td></tr>
-                    <tr><td class="p-3 font-bold">Brochet</td><td class="p-3 text-center text-blue-400">50%</td><td class="p-3 text-right">Rivière</td></tr>
-                    <tr><td class="p-3 font-bold">Sandre</td><td class="p-3 text-center text-green-400">30%</td><td class="p-3 text-right">Lac</td></tr>
-                    <tr><td class="p-3 font-bold">Anguille</td><td class="p-3 text-center text-purple-400">90%</td><td class="p-3 text-right">Étang</td></tr>
-                    <tr><td class="p-3 font-bold">Truite</td><td class="p-3 text-center text-orange-400">90%</td><td class="p-3 text-right">Fleuve</td></tr>
-                </tbody>
-            </table>
-        </div>
-
-        <p class="text-center text-xs text-slate-500 mt-4"><button onclick="logout()" class="underline">Déconnexion</button></p>
+        
+        <p class="text-center text-xs text-slate-500 mt-8">*Stocké localement. <button onclick="logout()" class="underline">Déconnexion</button></p>
     </div>
 
     <script>
+        window.onload = function() {
+            if (localStorage.getItem("isLoggedIn") === "true") {
+                showDashboard();
+            }
+        };
+
         function checkPass() {
-            if (document.getElementById('pass').value === "1234") {
+            const p = document.getElementById('pass').value;
+            // REMPLACEZ '1234' par votre mot de passe
+            if (p === "1234") {
                 localStorage.setItem("isLoggedIn", "true");
                 showDashboard();
-            } else { alert("Mot de passe incorrect"); }
+            } else {
+                alert("Mot de passe incorrect");
+            }
         }
+
         function showDashboard() {
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('dashboard').classList.remove('hidden');
         }
-        function logout() { localStorage.removeItem("isLoggedIn"); location.reload(); }
-        window.onload = () => { if (localStorage.getItem("isLoggedIn") === "true") showDashboard(); };
+
+        function logout() {
+            localStorage.removeItem("isLoggedIn");
+            location.reload();
+        }
     </script>
 </body>
 </html>
