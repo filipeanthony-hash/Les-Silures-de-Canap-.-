@@ -25,7 +25,9 @@
             <h2 class="text-[10px] font-bold text-blue-300 uppercase" id="city-name">Localisation...</h2>
             <div class="flex gap-4 items-center">
                 <a href="https://www.facebook.com/share/g/1Fe5eQhNqP/" target="_blank" class="text-blue-400 text-3xl"><i class="fab fa-facebook"></i></a>
-                <button onclick="toggleSpots()" class="bg-blue-900/50 border border-blue-400 text-blue-300 px-3 py-1 rounded-lg text-[10px] font-bold uppercase">Spots</button>
+                <button onclick="toggleSpots()" class="bg-blue-800/60 border-2 border-blue-300 text-white px-5 py-2 rounded-lg text-[11px] font-black uppercase tracking-wider shadow-[0_0_10px_rgba(147,197,253,0.5)] hover:bg-blue-600 transition-all">
+                    Spots
+                </button>
             </div>
         </div>
 
@@ -53,8 +55,9 @@
             </div>
 
             <select id="fish-select" onchange="calculateIndex()" class="w-full p-3 rounded-xl bg-slate-900 border border-blue-500/50 text-white text-xs">
-                <option value="Silure">Silure</option><option value="Truite">Truite</option><option value="Brochet">Brochet</option>
-                <option value="Perche">Perche</option><option value="Anguille">Anguille</option><option value="Carpe">Carpe</option>
+                <option value="Silure">Silure</option><option value="Truite">Truite</option>
+                <option value="Brochet">Brochet</option><option value="Perche">Perche</option>
+                <option value="Anguille">Anguille</option><option value="Carpe">Carpe</option>
             </select>
         </div>
 
@@ -69,6 +72,7 @@
     </div>
 
     <script>
+        // --- GESTION DES SPOTS ---
         const mySpots = [
             { name: "77220 Tournan-en-Brie", url: "https://maps.app.goo.gl/WcPo8FsBS1EmzdVN9?g_st=iw" },
             { name: "Nouveau Spot", url: "Https://maps.app.goo.gl/WcPo8FsBS1EmzdVN9?g_st=iwAjoute-moi" }
@@ -112,9 +116,11 @@
         async function initApp() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(async (p) => {
-                    const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${p.coords.latitude}&lon=${p.coords.longitude}`);
-                    const d = await res.json();
-                    document.getElementById('city-name').innerText = d.address.town || d.address.city || "Localisation";
+                    try {
+                        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${p.coords.latitude}&lon=${p.coords.longitude}`);
+                        const d = await res.json();
+                        document.getElementById('city-name').innerText = d.address.town || d.address.city || "Localisation";
+                    } catch(e) { document.getElementById('city-name').innerText = "Paris"; }
                 });
             }
             calculateIndex();
