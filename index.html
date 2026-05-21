@@ -9,7 +9,10 @@
     <style>
         .river-bg { background: linear-gradient(180deg, #e0f2f1 0%, #b2dfdb 100%); }
         .glass-card-river { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(178, 223, 219, 0.5); border-radius: 1.5rem; }
+        
+        /* Texte et chiffres en noir */
         body, body * { color: #000000 !important; }
+        
         .btn-fb { background-color: #1877F2 !important; color: white !important; }
         .border-fb { border-color: #1877F2 !important; }
         .text-fb { color: #1877F2 !important; }
@@ -27,10 +30,11 @@
         
         <div class="flex justify-between items-center px-2">
             <h2 class="text-[10px] font-bold uppercase" id="city-name">Localisation...</h2>
-            <div class="flex gap-4 items-center">
+            <div class="flex gap-3 items-center">
+                <a href="#" target="_blank" class="text-green-600 text-3xl"><i class="fab fa-whatsapp"></i></a>
                 <i class="fas fa-bell text-fb text-2xl"></i>
                 <a href="https://www.facebook.com/share/g/1Fe5eQhNqP/" target="_blank" class="text-fb text-3xl"><i class="fab fa-facebook"></i></a>
-                <button onclick="toggleSpots()" class="btn-fb px-5 py-2 rounded-lg text-[11px] font-black uppercase shadow-lg hover:opacity-90 transition-all">Spots</button>
+                <button onclick="toggleSpots()" class="btn-fb px-4 py-2 rounded-lg text-[10px] font-black uppercase shadow-lg hover:opacity-90 transition-all">Spots</button>
             </div>
         </div>
 
@@ -82,8 +86,7 @@
     </div>
 
     <script>
-        // Tu peux changer le texte de la notification ici :
-        const notificationText = "NUTIF: Bienvenue sur le groupe Les Silures de Canapé !";
+        const notificationText = "Bienvenue sur le groupe Les Silures de Canapé !";
         document.getElementById('notif-bar').innerText = notificationText;
 
         const mySpots = [{ name: "77220 Tournan-en-Brie", url: "#" }, { name: "Nouveau Spot", url: "#" }];
