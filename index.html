@@ -86,7 +86,7 @@
 
         function setWeather(w) { weather = w; calculateIndex(); }
         function checkPass() {
-            if (document.getElementById('pass').value === "1234") {
+            if (document.getElementById('pass').value === "198502") {
                 document.getElementById('login-screen').classList.add('hidden');
                 document.getElementById('dashboard').classList.remove('hidden');
                 if (navigator.geolocation) navigator.geolocation.getCurrentPosition(p => getCity(p.coords.latitude, p.coords.longitude));
