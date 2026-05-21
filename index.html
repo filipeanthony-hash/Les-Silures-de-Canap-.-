@@ -86,7 +86,9 @@
         const notificationText = "Bienvenue sur le groupe Les Silures de Canapé !";
         document.getElementById('notif-bar').innerText = notificationText;
 
-        const mySpots = [{ name: "36 Rue René Leblond, 77220 Tournan-en-Brie , url: "https://www.google.com/maps" }, { name: "Nouveau Spot", url: "#" }];
+        // CORRECTION FAITE ICI : la guillemet fermante a été ajoutée après Tournan-en-Brie
+        const mySpots = [{ name: "36 Rue René Leblond, 77220 Tournan-en-Brie", url: "https://www.google.com/maps" }, { name: "Nouveau Spot", url: "#" }];
+        
         const fishData = {
             "Silure": { "Rivière": "80%", "Lac": "60%" }, "Truite": { "Rivière": "90%", "Lac": "30%" },
             "Brochet": { "Rivière": "60%", "Lac": "85%" }, "Perche": { "Rivière": "70%", "Lac": "75%" }
