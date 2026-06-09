@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr" class="h-full">
 <head>
@@ -173,9 +174,7 @@
         }
 
         async function initApp() {
-            // Initialisation du texte du concours en dur
             document.getElementById('concours-text').value = MESSAGE_CONCOURS;
-            
             document.getElementById('global-fish-counter').innerText = localStorage.getItem('globalFish') || 0;
             
             if(gpsEnabled) document.getElementById('gps-btn').classList.add('bg-gps-active');
@@ -210,7 +209,10 @@
 
         function checkPass() { const g = document.getElementById('groupe-select').value; if(document.getElementById('pass').value === passwords[g]) { currentGroup = g; document.getElementById('login-part').classList.add('hidden'); document.getElementById('counter-part').classList.remove('hidden'); document.getElementById('group-title').innerText = g.toUpperCase(); updateGroupDisplay(); } else { alert("Code incorrect"); } }
         function updateGroupDisplay() { const data = JSON.parse(localStorage.getItem(currentGroup) || '{"points":0}'); document.getElementById('total-score').innerText = data.points + " pts"; }
-        function addFishToGroup() { let data = JSON.parse(localStorage.getItem(currentGroup) || '{"points":0}'); data.points += 5; localStorage.setItem(currentGroup, JSON.stringify(data)); updateGroupDisplay(); }
+        
+        // CORRECTION ICI : Le poisson ajoute désormais 1 point au lieu de 5
+        function addFishToGroup() { let data = JSON.parse(localStorage.getItem(currentGroup) || '{"points":0}'); data.points += 1; localStorage.setItem(currentGroup, JSON.stringify(data)); updateGroupDisplay(); }
+        
         function addWeight() { const p = parseInt(document.getElementById('poids-input').value); if(!isNaN(p) && p > 0) { let data = JSON.parse(localStorage.getItem(currentGroup) || '{"points":0}'); data.points += p; localStorage.setItem(currentGroup, JSON.stringify(data)); document.getElementById('poids-input').value = ""; updateGroupDisplay(); } }
         function resetScore() { if(confirm("Vider les points ?")) { localStorage.removeItem(currentGroup); updateGroupDisplay(); } }
         function addGlobalFish() { let total = parseInt(localStorage.getItem('globalFish') || 0); localStorage.setItem('globalFish', total + 1); document.getElementById('global-fish-counter').innerText = total + 1; }
